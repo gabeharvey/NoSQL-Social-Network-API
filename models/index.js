@@ -4,4 +4,4 @@ const Thought = require('./Thought');
 const Reaction = require('./Reaction');
 
 // Exports User, Thought, and Reaction Models
-module.exports = {User, Thought, Reaction};
+module.exports = { User, Thought, Reaction };
