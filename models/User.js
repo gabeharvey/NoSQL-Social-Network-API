@@ -15,6 +15,20 @@ const userSchema = new Schema (
             required: true,
             unique: true,
             match: [/.+@.+\..+/, 'Enter Valid Email Address']
-        }
+        },
+        thoughts: [{
+            type: Schema.Types.ObjectId,
+            ref: "Thought",
+        }],
+        friends: [{
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        }],
+    },
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        id: false,
     }
-)
+);
