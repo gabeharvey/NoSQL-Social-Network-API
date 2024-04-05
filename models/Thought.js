@@ -31,3 +31,14 @@ const thoughtSchema = new Schema (
         id: false,
     }
 );
+
+// Adds Virtual reactionCount to thoughtSchema
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+});
+
+// Creates Mongoose Model
+const Thought = model('thought', thoughtSchema);
+
+// Exports Thought Model
+module.exports = Thought;
