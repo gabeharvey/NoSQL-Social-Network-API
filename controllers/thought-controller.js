@@ -16,4 +16,39 @@ const getSingleThought = (req, res) => {
     .catch((err) => res.status(500).json(err));
 };
 
-module.exports = { getThoughts, getSingleThought }
+const createThought = (req, res) => {
+    Thought.create ({
+        thoughtText: req.body.thoughtText,
+        username: req.body.username
+    }).then((thought) => {
+        return User.findOneAndUpdate (
+            { username: req.body.username },
+            { $addToSet: { thoughts: thought._id }},
+            { new: true }
+        );
+    }).then((user) => !user ? res.status(404).json({ message: 'User Id Invalid / No Thought Created'})
+    : res.json(user))
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+};
+
+const updateThought = (req, res) => {
+    Thought.findOneAndUpdate (
+        { _id: req.params.thoughtId },
+        { thoughtText: req.body.thoughtText, username: req.body.username },
+        { new: true },
+        (err, result) => {
+            if (result) {
+                res.status(200).json(result);
+                console.log(`Updated Thought: ${result}`);
+            } else {
+                console.log(err);
+                res.status(500).json({ message: 'Thought Not Updated', err });
+            }
+        }
+    );
+};
+
+module.exports = { getThoughts, getSingleThought, createThought, updateThought }
