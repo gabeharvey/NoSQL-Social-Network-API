@@ -42,4 +42,46 @@ const updateUser = (req, res) => {
     );
 };
 
-module.exports = { getUsers, getSingleUser, createUser, updateUser };
+const deleteUser = (req, res) => {
+    User.findOneAndRemove ({ _id: req.params.userId })
+    .then((user) => !user ?res.status(404).json({ message: 'User Id Not Found' })
+    : Thought.deleteMany ({ username: user.username })
+    .then((thoughts) => !thoughts ? res.status(404).json({ message: 'User Thoughts Not Found'})
+    : res.json(user)))
+    .catch((err) => res.status(500).json(err));
+};
+
+const addFriend = (req, res) => {
+    User.findOne ({ _id: req.params.friendId }).select('-__v')
+    .then((user) => {
+        return User.findOneAndUpdate (
+            { _id: req.params.userId },
+            { $addToSet: {
+                friends: user._id
+            }},
+            { new: true }
+        );
+    })
+    .then((user) => !user ? res.status(404).json({ message: 'User Id Not Found' })
+    : res.json(user))
+    .catch((err) => res.status(500).json(err));
+};
+
+const deleteFriend = (req, res) => {
+    User.findOne ({ _id: req.params.friendId }).select('-__v')
+    .then((user => {
+        return User.findOneAndUpdate (
+            { _id: req.params.userId },
+            { $pull: {
+                friends: user._id
+            }},
+            { new: true }
+        );
+    })
+    .then((user) => !user ? res.status(404).json({ message: 'User Id Not Found'})
+    : res.json(user)
+    )
+    .catch((err) => res.status(500).json(err)));
+};
+
+module.exports = { getUsers, getSingleUser, createUser, updateUser, deleteUser, addFriend, deleteFriend };
