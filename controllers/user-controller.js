@@ -69,19 +69,20 @@ const addFriend = (req, res) => {
 
 const deleteFriend = (req, res) => {
     User.findOne ({ _id: req.params.friendId }).select('-__v')
-    .then((user => {
+    .then((friend => { 
+        if (!friend) {
+            return res.status(404).json({ message: "Friend Not Found" });
+        }
         return User.findOneAndUpdate (
             { _id: req.params.userId },
             { $pull: {
-                friends: user._id
+                friends: friend._id
             }},
             { new: true }
-        );
-    })
-    .then((user) => !user ? res.status(404).json({ message: 'User Id Not Found'})
-    : res.json(user)
-    )
-    .catch((err) => res.status(500).json(err)));
+        )    
+        .then((user) => !user ? res.status(404).json({ message: 'User Id Not Found'}): res.json(user))
+    }))
+    .catch((err) => res.status(500).json(err))
 };
 
 module.exports = { getUsers, getSingleUser, createUser, updateUser, deleteUser, addFriend, deleteFriend };

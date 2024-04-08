@@ -38,7 +38,7 @@ thoughtSchema.virtual('reactionCount').get(function () {
 });
 
 // Creates Mongoose Model
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 // Exports Thought Model
 module.exports = Thought;
