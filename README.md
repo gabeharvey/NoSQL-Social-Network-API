@@ -29,6 +29,8 @@ After installation procedures are completed, the user will need to open Insomnia
 
 Project Done in collaboration with coding students Kalyn Sifuentes, Joshua Hale, and Angela Cortes.
 
+YouTube Channel Accessed for Function Guidance: https://www.youtube.com/@thoscalle by Thomas Calle
+
 Tutor Assistance provided by Abduraghmaan Gabriels.
 
 ## Screenshots
