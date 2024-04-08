@@ -5,7 +5,6 @@ const db = require('./config/connection');
 
 const PORT = 3001;
 const app = express();
-const cwd = process.cwd();
 
 // Middleware for Express
 app.use(express.urlencoded ({ extended: true }));
